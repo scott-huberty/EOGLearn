@@ -14,10 +14,11 @@ def _get_params(subject, run):
     row = df.loc[(df.subject == subject.upper()) & (df.run == int(run))]
     assert len(row) == 1
     row = row.T.squeeze()
+    task = row["task"]
     return dict(
                 url=row["url"],
-                archive_name=f"{subject}_DOTS{run}_EEG.mat",
-                folder_name=f"EEGEYENET-Data/dots/{subject}",
+                archive_name=f"{subject}_{task}{run}_EEG.mat",
+                folder_name=f"EEGEYENET-Data/{task}/{subject}",
                 hash=row["hash"],
                 dataset_name="EEGEYENET")
 
