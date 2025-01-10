@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Literal
 
 import pandas as pd
 
@@ -23,8 +24,14 @@ def _get_params(subject, run):
                 dataset_name="EEGEYENET")
 
 
-def get_subjects_runs():
+def get_subjects_runs(task: Literal["DOTS", "AS"] = "DOTS"):
     """Get dictionary of {subject: [lists of runs]}.
+
+    Parameters
+    ----------
+    task :
+        Which EEGEYENET task task to extract the subject ID's and runs for. Can be
+        ``"DOTS"``, or ``"AS"`` (antisaccade). Defaults to ``'DOTS'``.
 
     Returns
     -------
@@ -32,6 +39,7 @@ def get_subjects_runs():
         Dictionary of subjects with the runs as values.
     """
     df = _get_urls_df()
+    df = df.loc[df["task"] == task].copy()
     return {subject: df.run.values[df.subject == subject]
             for subject in df.subject.unique()}
 
