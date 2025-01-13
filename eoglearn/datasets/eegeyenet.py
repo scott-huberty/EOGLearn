@@ -69,7 +69,7 @@ def fetch_eegeyenet(subject="EP10", run=1, fetch_dataset_kwargs=None):
     run = int(run)
     runs = get_subjects_runs(task=task)
     if subject not in runs or run not in runs[subject]:
-        raise ValueError(f"subject {subject} and run {run} not available."
+        raise ValueError(f"subject {subject} and run {run} not available. "
                          "See get_subjects_runs() for information on "
                          "available subjects and runs.")
 
