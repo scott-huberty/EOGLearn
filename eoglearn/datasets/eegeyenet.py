@@ -63,10 +63,11 @@ def fetch_eegeyenet(subject="EP10", run=1, fetch_dataset_kwargs=None):
     pathlib.Path
         Path to the downloaded file.
     """
+    task = _get_task_from_subject_id(subject)
     if not fetch_dataset_kwargs:
         fetch_dataset_kwargs = dict()
     run = int(run)
-    runs = get_subjects_runs()
+    runs = get_subjects_runs(task=task)
     if subject not in runs or run not in runs[subject]:
         raise ValueError(f"subject {subject} and run {run} not available."
                          "See get_subjects_runs() for information on "
@@ -81,5 +82,14 @@ def fetch_eegeyenet(subject="EP10", run=1, fetch_dataset_kwargs=None):
     if not fpath.exists():
         fetch_dataset_kwargs["force_update"] = True
         _fetch_dataset(fetch_dataset_kwargs=fetch_dataset_kwargs)
-
     return fpath
+
+
+def _get_task_from_subject_id(subject):
+    if  subject.startswith("EP"):
+        return "DOTS"
+    if subject.startswith(("A", "B")):
+        return "AS"
+    raise ValueError(
+        f"Can't determine task for {subject}. Is this subject in eegeyenet_urls.csv?"
+        )
