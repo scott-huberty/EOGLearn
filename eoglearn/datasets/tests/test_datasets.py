@@ -15,9 +15,19 @@ def test_read_mne_eyetracking_raw(unit):
     assert len(events["eeg"][:, -1]) == 16
     assert len(events["eyetrack"][:, -1]) == 16
 
-
-def test_fetch_eegeyenet():
+@pytest.mark.parametrize(
+        "subject, run",
+        [
+            ("EP10", 1),
+            ("BZ4", 1),
+        ]
+)
+def test_fetch_eegeyenet(subject, run):
     """Test downloading eegeyenet data."""
     fetch_dataset_kwargs = dict(force_update=True)
-    fname = fetch_eegeyenet(fetch_dataset_kwargs=fetch_dataset_kwargs)
+    fname = fetch_eegeyenet(
+        subject=subject,
+        run=run,
+        fetch_dataset_kwargs=fetch_dataset_kwargs
+        )
     assert fname.exists()
